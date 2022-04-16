@@ -9,7 +9,7 @@ const TableHeader = () => {
       {headers
         .filter((header) => header !== 'residents')
         .map((item) => (
-          <th key={ item }>{item}</th>
+          <th key={ item }>{item.replace('_', ' ')}</th>
         ))}
     </tr>
   );

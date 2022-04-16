@@ -7,6 +7,11 @@ const PlanetsProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [filter, setFilter] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   const getPlanets = async () => {
     setIsFetching(true);
@@ -21,10 +26,21 @@ const PlanetsProvider = ({ children }) => {
     getPlanets();
   }, []);
 
+  const handleFilterChange = ({ target }) => {
+    setFilter({
+      ...filter,
+      filterByName: {
+        name: target.value,
+      },
+    });
+  };
+
   const contextValue = {
     data,
     isFetching,
     headers,
+    filter,
+    handleFilterChange,
   };
 
   return (
