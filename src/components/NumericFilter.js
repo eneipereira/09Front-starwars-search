@@ -54,18 +54,20 @@ const NumericFilter = () => {
   );
 
   return (
-    <form onSubmit={ (e) => handleNumFilterClick(e, { column, comparison, value }) }>
-      {renderColumns()}
-      {renderComparison()}
-      {renderValueInput()}
-      <button
-        data-testid="button-filter"
-        type="submit"
-      >
-        Filter
+    <div>
+      <form onSubmit={ (e) => handleNumFilterClick(e, { column, comparison, value }) }>
+        {renderColumns()}
+        {renderComparison()}
+        {renderValueInput()}
+        <button
+          data-testid="button-filter"
+          type="submit"
+        >
+          Filter
 
-      </button>
-    </form>
+        </button>
+      </form>
+    </div>
   );
 };
 

@@ -16,25 +16,26 @@ const TableBody = () => {
   const planetsByValues = (planets) => {
     const { filterByNumericValues } = filter;
 
-    return planets.filter((planet) => {
-      let filteredPlanets = [];
+    let filteredPlanets = planets;
 
-      filterByNumericValues.forEach(({ column, comparison, value }) => {
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      filteredPlanets = filteredPlanets.filter((planet) => {
         if (comparison === 'maior que') {
-          filteredPlanets = +planet[column] > +value;
+          return +planet[column] > +value;
         }
 
         if (comparison === 'menor que') {
-          filteredPlanets = +planet[column] < +value;
+          return +planet[column] < +value;
         }
 
         if (comparison === 'igual a') {
-          filteredPlanets = +planet[column] === +value;
+          return +planet[column] === +value;
         }
-        return filteredPlanets;
+        return planet;
       });
       return filteredPlanets;
     });
+    return filteredPlanets;
   };
 
   const renderBody = () => {
