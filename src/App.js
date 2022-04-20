@@ -1,5 +1,6 @@
 import React from 'react';
 import NameFilter from './components/NameFilter';
+import NumericFilter from './components/NumericFilter';
 import Table from './components/Table';
 import PlanetsProvider from './context/PlanetsProvider';
 
@@ -12,6 +13,7 @@ function App() {
         Projeto Star Wars - Trybe
       </h1>
       <NameFilter />
+      <NumericFilter />
       <Table />
     </PlanetsProvider>
   );

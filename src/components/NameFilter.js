@@ -4,7 +4,7 @@ import PlanetsContext from '../context/PlanetsContext';
 const NameFilter = () => {
   const { handleFilterChange } = useContext(PlanetsContext);
   return (
-    <div style={ { display: 'flex', justifyContent: 'center' } }>
+    <div style={ { display: 'flex', justifyContent: 'center', marginBottom: '10px' } }>
       <input
         data-testid="name-filter"
         type="text"

@@ -4,11 +4,42 @@ import PlanetsContext from '../context/PlanetsContext';
 const TableBody = () => {
   const { data, filter } = useContext(PlanetsContext);
 
-  const renderBody = () => {
+  const planetsByName = () => {
     const { filterByName: { name } } = filter;
+    if (name) {
+      return data.filter((item) => item.name.toLowerCase().includes(name.toLowerCase()));
+    }
 
-    const planets = data.filter((item) => item.name.includes(name)) || data;
+    return data;
+  };
 
+  const planetsByValues = (planets) => {
+    const { filterByNumericValues } = filter;
+
+    return planets.filter((planet) => {
+      let filteredPlanets = [];
+
+      filterByNumericValues.forEach(({ column, comparison, value }) => {
+        if (comparison === 'maior que') {
+          filteredPlanets = +planet[column] > +value;
+        }
+
+        if (comparison === 'menor que') {
+          filteredPlanets = +planet[column] < +value;
+        }
+
+        if (comparison === 'igual a') {
+          filteredPlanets = +planet[column] === +value;
+        }
+        return filteredPlanets;
+      });
+      return filteredPlanets;
+    });
+  };
+
+  const renderBody = () => {
+    const filteredByName = planetsByName();
+    const planets = planetsByValues(filteredByName);
     return (
       planets.map((planet) => (
         <tr key={ planet.name }>

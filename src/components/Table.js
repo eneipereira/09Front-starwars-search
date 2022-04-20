@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import TableBody from './TableBody';
 import TableHeader from './TableHeader';
 
 const Table = () => {
-  const { isFetching } = useContext(PlanetsContext);
+  const { isFetching, getPlanets } = useContext(PlanetsContext);
+
+  useEffect(() => {
+    getPlanets();
+  }, [getPlanets]);
 
   return (
     <div>
