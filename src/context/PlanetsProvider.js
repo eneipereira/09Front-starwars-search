@@ -41,8 +41,7 @@ const PlanetsProvider = ({ children }) => {
     });
   };
 
-  const handleNumFilterClick = (e, filters) => {
-    e.preventDefault();
+  const handleNumFilterClick = (filters) => {
     setFilter({
       ...filter,
       filterByNumericValues: filter.filterByNumericValues.concat(filters),

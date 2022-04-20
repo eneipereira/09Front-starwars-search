@@ -5,25 +5,29 @@ const NumericFilter = () => {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('0');
-  const { handleNumFilterClick } = useContext(PlanetsContext);
+  const {
+    filter: { filterByNumericValues }, handleNumFilterClick,
+  } = useContext(PlanetsContext);
 
-  const renderColumns = () => {
-    const columnOptions = [
-      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-    ];
+  const columnOptions = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
 
-    return (
-      <select
-        data-testid="column-filter"
-        value={ column }
-        onChange={ ({ target }) => setColumn(target.value) }
-      >
-        {columnOptions.map((option) => (
-          <option key={ option } value={ option }>{option}</option>
-        ))}
-      </select>
-    );
-  };
+  const usedOptions = filterByNumericValues.map(({ column: col }) => col);
+
+  const remainingOptions = columnOptions.filter((item) => !usedOptions.includes(item));
+
+  const renderColumns = () => (
+    <select
+      data-testid="column-filter"
+      value={ column }
+      onChange={ ({ target }) => setColumn(target.value) }
+    >
+      {remainingOptions.map((option) => (
+        <option key={ option } value={ option }>{option}</option>
+      ))}
+    </select>
+  );
 
   const renderComparison = () => {
     const comparisonOptions = ['maior que', 'menor que', 'igual a'];
@@ -53,15 +57,24 @@ const NumericFilter = () => {
     />
   );
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleNumFilterClick({ column, comparison, value });
+    setColumn(remainingOptions[1]);
+    setComparison('maior que');
+    setValue('0');
+  };
+
   return (
     <div>
-      <form onSubmit={ (e) => handleNumFilterClick(e, { column, comparison, value }) }>
+      <form onSubmit={ (e) => handleSubmit(e) }>
         {renderColumns()}
         {renderComparison()}
         {renderValueInput()}
         <button
           data-testid="button-filter"
           type="submit"
+          disabled={ !column }
         >
           Filter
 
