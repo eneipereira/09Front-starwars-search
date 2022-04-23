@@ -1,12 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
+const RADIX = 16;
+const START = 2;
+const END = 9;
+
 const NumericFilter = () => {
-  const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('maior que');
-  const [value, setValue] = useState('0');
   const {
     filter: { filterByNumericValues }, handleNumFilterClick,
+    column, comparison, value,
+    setColumn, setComparison, setValue,
   } = useContext(PlanetsContext);
 
   const columnOptions = [
@@ -16,6 +19,7 @@ const NumericFilter = () => {
   const usedOptions = filterByNumericValues.map(({ column: col }) => col);
 
   const remainingOptions = columnOptions.filter((item) => !usedOptions.includes(item));
+  console.log(remainingOptions);
 
   const renderColumns = () => (
     <select
@@ -59,7 +63,13 @@ const NumericFilter = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleNumFilterClick({ column, comparison, value });
+    const newFilter = {
+      id: Math.random().toString(RADIX).substring(START, END),
+      column,
+      comparison,
+      value,
+    };
+    handleNumFilterClick(newFilter);
     setColumn(remainingOptions[1]);
     setComparison('maior que');
     setValue('0');
@@ -74,7 +84,7 @@ const NumericFilter = () => {
         <button
           data-testid="button-filter"
           type="submit"
-          disabled={ !column }
+          disabled={ remainingOptions.length === 0 }
         >
           Filter
 

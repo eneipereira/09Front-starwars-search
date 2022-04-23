@@ -11,6 +11,9 @@ const PlanetsProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [value, setValue] = useState('0');
   const [filter, setFilter] = useState({
     filterByName: {
       name: '',
@@ -32,11 +35,11 @@ const PlanetsProvider = ({ children }) => {
     setIsFetching(false);
   }, []);
 
-  const handleFilterChange = ({ target: { value } }) => {
+  const handleFilterChange = ({ target: { value: val } }) => {
     setFilter({
       ...filter,
       filterByName: {
-        name: value,
+        name: val,
       },
     });
   };
@@ -48,14 +51,38 @@ const PlanetsProvider = ({ children }) => {
     });
   };
 
+  const removeFilters = (id = '', col) => {
+    const { filterByNumericValues } = filter;
+    if (!id) {
+      setFilter({
+        ...filter,
+        filterByNumericValues: [],
+      });
+      setColumn('population');
+    } else {
+      setFilter({
+        ...filter,
+        filterByNumericValues: filterByNumericValues.filter((item) => item.id !== id),
+      });
+      setColumn(col);
+    }
+  };
+
   const contextValue = {
     data,
     isFetching,
     headers,
     filter,
+    column,
+    comparison,
+    value,
     getPlanets,
     handleFilterChange,
     handleNumFilterClick,
+    removeFilters,
+    setColumn,
+    setComparison,
+    setValue,
   };
 
   return (
